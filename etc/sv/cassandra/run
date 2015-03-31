@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Redirect stderr to stdout
+exec 2>&1
+set -e
+
+. /etc/profile.d/global-env.sh
+CONFIG=/etc/cassandra/cassandra.yaml
+ENV=/etc/cassandra/cassandra-env.sh
+
+sed -i -f - /etc/cassandra/cassandra.yaml <<EOF
+s/^#\?rpc_address:.*\$/rpc_address: ${DOCKER_LOCAL_ADDR}/
+EOF
+
+sed -i -f - /etc/cassandra/cassandra-env.sh <<EOF
+s/^#\? *JVM_OPTS=.*-Djava\.rmi\.server\.hostname.*\$/JVM_OPTS="\$JVM_OPTS -Djava.rmi.server.hostname=${DOCKER_LOCAL_ADDR}"/
+EOF
+
+exec /usr/sbin/cassandra -f

@@ -1,0 +1,2 @@
+#! /bin/bash
+exec docker ps >/dev/null 2>&1

@@ -1,0 +1,3 @@
+#!/bin/bash
+# Start the rsyslog daemon, it will background itself if -n is not used.
+exec rsyslogd -n -c5

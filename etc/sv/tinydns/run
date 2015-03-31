@@ -1,0 +1,18 @@
+#! /bin/bash
+exec 2>&1
+set -e
+. /etc/profile.d/global-env.sh
+export IP=127.0.0.1
+ME=$DOCKER_LOCAL_ADDR
+export ROOT=/etc/tinydns
+(
+    set -e
+    mkdir -p $ROOT
+    cd $ROOT
+    : >data
+    tinydns-edit data data.tmp add ns .ion $ME
+    tinydns-edit data data.tmp add host $(hostname).ion $ME
+    tinydns-edit data data.tmp add alias dev.ion $ME
+    tinydns-data
+)
+exec /usr/bin/tinydns

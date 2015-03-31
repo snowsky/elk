@@ -1,0 +1,24 @@
+AcceptEnv           TERM LANG LC_* ION_*
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+Port                22
+Protocol            2
+TCPKeepAlive        yes
+X11DisplayOffset    10
+X11Forwarding       yes
+
+HostKey  /etc/ssh/ssh_host_dsa_key
+HostKey  /etc/ssh/ssh_host_ecdsa_key
+HostKey  /etc/ssh/ssh_host_ed25519_key
+HostKey  /etc/ssh/ssh_host_rsa_key
+
+LogLevel      VERBOSE
+PrintLastLog  no
+PrintMotd     no
+
+ChallengeResponseAuthentication  no
+PermitRootLogin                  yes
+UsePAM                           no
+UsePrivilegeSeparation           no
+
+RSAAuthentication yes
+PubkeyAuthentication yes

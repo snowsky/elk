@@ -1,0 +1,5 @@
+#! /bin/bash
+set -e
+for P in 9042 9160 ; do
+    nc -z "$DOCKER_LOCAL_ADDR" "$P"
+done

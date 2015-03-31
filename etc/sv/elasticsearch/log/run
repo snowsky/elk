@@ -1,0 +1,3 @@
+#!/bin/bash
+sv start rsyslog || exit 1
+exec logger -t elasticsearch-console

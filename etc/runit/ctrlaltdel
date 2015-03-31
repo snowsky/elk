@@ -1,0 +1,3 @@
+#! /bin/bash
+: > /etc/runit/stopit
+chmod 100 /etc/runit/stopit

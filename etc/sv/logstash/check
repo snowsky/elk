@@ -1,0 +1,2 @@
+#! /bin/bash
+nc -z "$DOCKER_LOCAL_ADDR" 9300

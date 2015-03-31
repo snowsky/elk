@@ -1,0 +1,23 @@
+#! /bin/bash
+exec 2>&1 </dev/null
+set -e
+set -x
+. /etc/profile.d/global-env.sh
+export IP=$DOCKER_LOCAL_ADDR
+export IPSEND=0.0.0.0
+export ROOT=/etc/dnscache
+export FORWARDONLY=true
+export CACHESIZE=1000000
+export DATALIMIT=3000000
+
+# Fscking docker keeps overwriting resolve.conf, keep copying it in
+# place until docker finally gives up.
+cat >/tmp/resolv.conf <<EOF
+nameserver $DOCKER_LOCAL_ADDR
+search ion
+EOF
+while ! cmp --quiet /tmp/resolv.conf /etc/resolv.conf ; do
+    cp /tmp/resolv.conf /etc/resolv.conf
+done
+
+exec /usr/bin/dnscache

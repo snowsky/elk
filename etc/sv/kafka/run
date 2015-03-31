@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Redirect stderr to stdout
+exec 2>&1
+
+set -e
+
+. /etc/profile.d/global-env.sh
+
+sed -i -f - /opt/kafka/config/server.properties <<EOF
+s/^zookeeper.connect=.*\$/zookeeper.connect=${DOCKER_LOCAL_ADDR}:2181/
+s/^#\?host\.name=.*\$/host.name=${DOCKER_LOCAL_ADDR}/
+EOF
+
+sv start zookeeper || exit 1
+
+exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties

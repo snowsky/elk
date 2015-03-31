@@ -1,0 +1,25 @@
+#!/bin/bash
+exec 2>&1
+
+set -e
+
+PIDFILE=/var/run/haproxy.pid
+CONFIG=/etc/haproxy/haproxy.cfg
+HAPROXY=/usr/sbin/haproxy
+RUNDIR=/var/lib/haproxy
+
+[ -d "$RUNDIR" ] || mkdir "$RUNDIR"
+chown haproxy:haproxy "$RUNDIR"
+chmod 2775 "$RUNDIR"
+
+# Fails if wrong
+"$HAPROXY" -c -f "$CONFIG" || exit 111
+
+CMD=(
+    "$HAPROXY"
+    -f "$CONFIG"
+    -Ds
+    -p "$PIDFILE"
+)
+echo "Starting ${CMD[*]}"
+exec "${CMD[@]}"

@@ -1,0 +1,3 @@
+#! /bin/bash
+# Work around some occasional docker/aufs bugs.
+/bin/chmod 4755 /usr/bin/sudo /usr/bin/sv

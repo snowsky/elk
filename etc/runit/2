@@ -1,0 +1,16 @@
+#! /bin/bash
+
+docker_host=$(ip route | grep default | cut -d' ' -f 3)
+[ -z "${docker_host}" ] && echo "Could not determine docker host IP" && exit 1
+export DOCKER_HOST_ADDR=${docker_host}
+
+docker_local_ip_addr=$(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+[ -z "${docker_local_ip_addr}" ] && echo "Could not determine docker local IP" && exit 1
+export DOCKER_LOCAL_ADDR=${docker_local_ip_addr}
+
+export SVDIR=/service
+unset http_host
+
+export | grep -v -F -w -e PWD -e OLDPWD -e SHLVL > /etc/profile.d/global-env.sh
+
+exec runsvdir /service
