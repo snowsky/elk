@@ -4,8 +4,7 @@ DOCKER_RUN_ARGS=                                \
  -d                                             \
  -h ELK	                                        \
  -p 80:80                                       \
- -p 9200:9200                                   \
- -p 9300:9300                                   \
+ -p 5601:5601                                   \
  -v /var/lib/docker:/var/lib/docker
 
 IMAGE=elk
@@ -24,7 +23,7 @@ all:
 clean:
 	rm -fr home.tar etc.tar
 	rm -fr id_rsa id_rsa.pub
-	-docker kill elk > /dev/null
-	-docker rm elk > /dev/null
+#	-docker kill elk > /dev/null
+#	-docker rm elk > /dev/null
 
 .PHONY: all clean

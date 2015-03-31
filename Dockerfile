@@ -12,9 +12,9 @@ RUN apt-get update && \
         software-properties-common && \
         rm -rf /var/cache/apt/archives
 
-RUN cd /opt/ && curl https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.tar.gz | tar zxv && ln -s /opt/elasticsearch-1.4.0 /opt/elasticsearch
-RUN cd /opt/ && curl https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz | tar zxv && ln -s /opt/logstash-1.4.2 /opt/logstash
-RUN cd /opt/ && curl https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz | tar zxv && ln -s /opt/kibana-3.1.2 /opt/kibana
+RUN mkdir -p /opt/elasticsearch && curl https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz | tar zxv -C /opt/elasticsearch --strip-components 1
+RUN mkdir -p /opt/logstash && curl https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz | tar zxv -C /opt/logstash --strip-components 1
+RUN mkdir -p /opt/kibana && curl https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz | tar zxv -C /opt/kibana --strip-components 1
 
 ## Install some bootstrap utilities ##
 RUN apt-get update && \
@@ -74,7 +74,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 RUN useradd -m -s /bin/bash elk && adduser elk docker 
 
-RUN sed -i 's/"+window.location.hostname+"/localhost/' /opt/kibana/config.js
+#don't need this in new version
+#RUN sed -i 's/"+window.location.hostname+"/localhost/' /opt/kibana/config.js
 
 # APACHE2 Configuration
 # Manually set up the apache environment variables
@@ -84,7 +85,7 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid 
 
-RUN ln -s $(readlink -f /opt/kibana) /var/www/html/kibana
+#RUN ln -s $(readlink -f /opt/kibana) /var/www/html/kibana
 
 RUN mkdir /root/.ssh/
 ADD id_rsa* /root/.ssh/
@@ -95,4 +96,4 @@ RUN chown -R elk.elk /home/elk/.ssh
 
 CMD ["/sbin/runit"]
 
-EXPOSE 22 80 9200 9300
+EXPOSE 22 80 5601 9300
