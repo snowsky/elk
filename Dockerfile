@@ -96,4 +96,4 @@ RUN chown -R elk.elk /home/elk/.ssh
 
 CMD ["/sbin/runit"]
 
-EXPOSE 22 80 5601 9300
+EXPOSE 22 80 5601 9200 9300
