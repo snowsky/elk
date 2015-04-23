@@ -92,6 +92,7 @@ ADD id_rsa* /root/.ssh/
 
 ADD etc.tar /
 ADD home.tar /
+ADD data/* /tmp/
 RUN chown -R elk.elk /home/elk/.ssh
 
 CMD ["/sbin/runit"]
